@@ -1,53 +1,60 @@
+
 import java.util.Random;
 import java.util.Scanner;
 
 public class CdCampoMinado {
-    
-   public static void main(String[] args) {
+
+    public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         int escolha;
         boolean continuar = true;
 
         while (continuar) {
             System.out.println();
-            System.out.println("                                  *   *   *");
-            System.out.println("                                *   BOOM!   *");
-            System.out.println("                                  *   *   *");
+            System.out.println("                    *   *   *");
+            System.out.println("                 *   BOOM!   *");
+            System.out.println("                    *   *   *");
             System.out.println();
-            System.out.println("-----------------------------------------------------------------------------------");
-            System.out.println("                         Bem-vindo ao Campo Minado                     ");
-            System.out.println("-----------------------------------------------------------------------------------");
-            System.out.println("1 - JOGAR ");
-            System.out.println("2 - COMO JOGAR ");
+            System.out.println("╔══════════════════════════════════════════════════╗");
+            System.out.println("║               BEM-VINDO AO CAMPO MINADO          ║");
+            System.out.println("╚══════════════════════════════════════════════════╝");
+            System.out.println("1 - JOGAR");
+            System.out.println("2 - COMO JOGAR");
             System.out.println("3 - CRIADORES DO JOGO");
-            System.out.println("4 - SAIR ");
+            System.out.println("4 - SAIR");
             System.out.println("=======================================");
-            System.out.print("Digite a opção desejada: ");
-            escolha = input.nextInt();
-            System.out.println("=======================================");
+            System.out.print("Escolha uma opção: ");
 
-            switch (escolha) {
-                case 1:
-                    jogarCampoMinado(input); // Passa o scanner para reaproveitar
-                    break;
-                case 2:
-                    System.out.println("O objetivo do CAMPO MINADO é abrir todas as células sem acionar uma mina.");
-                    System.out.println("Se você abrir uma célula com bomba, o jogo termina!");
-                    break;
-                case 3:
-                    System.out.println("Criadores do Jogo:");
-                    System.out.println(" - GUILHERME SANTOS");
-                    System.out.println(" - PEDRO HENRIQUE");
-                    System.out.println(" - PAULO CANDIDO");
-                    System.out.println(" - ROBERT OLIVEIRA");
-                    break;
-                case 4:
-                    System.out.println("Que pena, até a próxima!");
-                    continuar = false;
-                    break;
-                default:
-                    System.out.println("Opção inválida! Tente novamente.");
-                    break;
+            if (input.hasNextInt()) {
+                escolha = input.nextInt();
+                System.out.println("=======================================");
+
+                switch (escolha) {
+                    case 1:
+                        jogarCampoMinado(input);
+                        break;
+                    case 2:
+                        System.out.println("O objetivo do CAMPO MINADO é abrir todas as células sem acionar uma mina.");
+                        System.out.println("Se você abrir uma célula com bomba, o jogo termina!");
+                        break;
+                    case 3:
+                        System.out.println("Criadores do Jogo:");
+                        System.out.println(" - GUILHERME SANTOS");
+                        System.out.println(" - PEDRO HENRIQUE");
+                        System.out.println(" - PAULO CANDIDO");
+                        System.out.println(" - ROBERT OLIVEIRA");
+                        break;
+                    case 4:
+                        System.out.println("Que pena, até a próxima!");
+                        continuar = false;
+                        break;
+                    default:
+                        System.out.println("Opção inválida! Tente novamente.");
+                        break;
+                }
+            } else {
+                System.out.println("Entrada inválida! Digite um número.");
+                input.next();
             }
         }
 
@@ -56,35 +63,64 @@ public class CdCampoMinado {
 
     public static void jogarCampoMinado(Scanner scanner) {
         CampoMinado jogo = new CampoMinado();
-
         boolean jogando = true;
+
+        System.out.println("\n🪨 Iniciando uma nova partida de Campo Minado!");
+        System.out.println("Objetivo: Revele todas as células sem acionar uma bomba.\n");
+
         while (jogando) {
             jogo.mostrarTabuleiro();
-            System.out.print("Digite a linha (0-4): ");
-            int linha = scanner.nextInt();
-            System.out.print("Digite a coluna (0-4): ");
-            int coluna = scanner.nextInt();
 
-            if (!jogo.revelarCelula(linha, coluna)) {
+            int linha = solicitarEntrada(scanner, "linha", CampoMinado.LINHAS);
+            int coluna = solicitarEntrada(scanner, "coluna", CampoMinado.COLUNAS);
+
+            boolean jogadaValida = jogo.revelarCelula(linha, coluna);
+
+            if (!jogadaValida) {
                 jogo.revelarTudo();
                 jogo.mostrarTabuleiro();
-                System.out.println("Você pisou numa bomba! Fim de jogo.");
+                System.out.println("\n💥 BOOM! Você pisou numa bomba. Fim de jogo.");
                 jogando = false;
-            } else if (jogo.venceu()) {
-                jogo.revelarTudo();
-                jogo.mostrarTabuleiro();
-                System.out.println("Parabéns, você venceu o jogo!");
-                jogando = false;
+            } else {
+                System.out.println("Boa jogada!");
+                if (jogo.venceu()) {
+                    jogo.revelarTudo();
+                    jogo.mostrarTabuleiro();
+                    System.out.println("\n🎉 Parabéns! Você revelou todas as células com sucesso!");
+                    jogando = false;
+                }
             }
         }
 
-        System.out.println("\nPressione qualquer tecla para voltar ao menu...");
-        scanner.nextLine(); // Limpar buffer
-        scanner.nextLine(); // Espera Enter
+        System.out.print("\nPressione ENTER para voltar ao menu principal...");
+        scanner.nextLine();
+        scanner.nextLine();
+    }
+
+    public static int solicitarEntrada(Scanner scanner, String tipo, int limiteMax) {
+        int valor = -1;
+
+        while (true) {
+            System.out.print("Digite a " + tipo + " (0-" + (limiteMax - 1) + "): ");
+            if (scanner.hasNextInt()) {
+                valor = scanner.nextInt();
+                if (valor >= 0 && valor < limiteMax) {
+                    break;
+                } else {
+                    System.out.println("⚠️ Valor fora do intervalo permitido. Tente novamente.");
+                }
+            } else {
+                System.out.println("⚠️ Entrada inválida! Por favor, digite um número.");
+                scanner.next();
+            }
+        }
+
+        return valor;
     }
 }
 
 class CampoMinado {
+
     public static final int LINHAS = 5;
     public static final int COLUNAS = 5;
     public static final int NUM_BOMBAS = 3;
@@ -181,7 +217,6 @@ class CampoMinado {
         }
 
         celulasParaRevelar--;
-        System.out.println("Boa jogada!");
 
         if (tabuleiro[linha][coluna] == '0') {
             for (int l = linha - 1; l <= linha + 1; l++) {
