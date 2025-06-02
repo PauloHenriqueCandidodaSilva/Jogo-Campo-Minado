@@ -28,7 +28,7 @@ public class CdCampoMinado {
 
             switch (escolha) {
                 case 1:
-                    jogarCampoMinado(input); // Passa o scanner para reaproveitar
+                    jogarCampoMinado(input);
                     break;
                 case 2:
                     System.out.println("O objetivo do CAMPO MINADO é abrir todas as células sem acionar uma mina.");
@@ -79,8 +79,8 @@ public class CdCampoMinado {
         }
 
         System.out.println("\nPressione qualquer tecla para voltar ao menu...");
-        scanner.nextLine(); // Limpar buffer
-        scanner.nextLine(); // Espera Enter
+        scanner.nextLine();
+        scanner.nextLine();
     }
 }
 
