@@ -19,7 +19,7 @@ public class CdCampoMinado {
             System.out.println("-----------------------------------------------------------------------------------");
             System.out.println("1 - JOGAR ");
             System.out.println("2 - COMO JOGAR ");
-            System.out.println("3 - CRIADORES DO JOGO");
+            System.out.println("3 - CRIADORES DO JOGO ");
             System.out.println("4 - SAIR ");
             System.out.println("=======================================");
             System.out.print("Digite a opção desejada: ");
