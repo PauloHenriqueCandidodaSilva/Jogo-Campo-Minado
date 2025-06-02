@@ -1,3 +1,4 @@
+// -------
 import java.util.Random;
 import java.util.Scanner;
 
@@ -29,7 +30,8 @@ public class CdCampoMinado {
             switch (escolha) {
                 case 1:
                     jogarCampoMinado(input);
-                    break;
+ 
+                 break;
                 case 2:
                     System.out.println("O objetivo do CAMPO MINADO é abrir todas as células sem acionar uma mina.");
                     System.out.println("Se você abrir uma célula com bomba, o jogo termina!");
